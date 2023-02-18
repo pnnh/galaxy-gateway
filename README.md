@@ -1,15 +1,41 @@
+go示例项目
 
-## 手动进行brotli压缩
+## 本地监听文件服务
 
 ```shell
-npm i -g brotli-cli   # 安装压缩工具
-brotli-cli compress qt-canvas.wasm
+cd data
+http-server -a 0.0.0.0 -p 3700 --cors
 ```
- 
-## 更新依赖包版本
+
+## mod相关操作
 
 ```shell
-npm update    # 更新依赖包版本
-npm outdated  # 检测是否有过时的包
-npm install # 安装依赖包
+# 更新packages
+go get -u
+# 整理packages
+go mod tidy
+```
+
+### 编译构建
+
+这里target目录定为输出目录
+
+```shell
+# 服务端构建
+go build -o target/bin/ github.com/pnnh/galaxy-gateway
+# 前端资源构建
+cd browser
+npm run build
+```
+
+### 构建Docker镜像
+
+```bash
+# 构建docker镜像
+cd target
+sudo docker build -f Dockerfile -t galaxy-gateway:latest .
+# 测试执行构建的镜像
+sudo docker run -p 8080:8080 galaxy-gateway
+# 仅在本地测试时使用，将aws凭证文件挂载到docker容器
+sudo docker run -p 8080:8080 -v $HOME/.aws/credentials:/root/.aws/credentials:ro galaxy-gateway
 ```

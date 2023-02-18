@@ -13,3 +13,4 @@ node_modules/
 build/
 gen/
 .vscode/
+debug/
